@@ -1,0 +1,23 @@
+Package: metasleep
+Title: Meta Analysis of Sleep
+Version: 0.1
+Author: Øystein Sørensen <oystein.sorensen@psykologi.uio.no>
+Maintainer: Øystein Sørensen <oystein.sorensen@psykologi.uio.no>
+Description: Functions for fitting models relating hippocampus volume to self reported sleep.
+Depends: R (>= 3.1.0),
+Imports:  mgcv,
+  lme4,
+  gamm4,
+  mvmeta,
+  ggplot2,
+  dplyr,
+  purrr,
+  tidyr,
+  stats,
+  rlang,
+  mvtnorm,
+  stringr
+License: GPL-3
+LazyData: true
+RoxygenNote: 6.1.1
+Encoding: UTF-8
