@@ -31,16 +31,24 @@ check_data <- function(data){
                paste(pull(check, .data$ID), collapse = ", ")))
   }
   
-  if(! "Age_bl" %in% names(data)){
-    message("Adding Age_bl and Timepoint variables.")
-    data <- data %>% 
-      group_by(.data$ID) %>% 
-      mutate(
-        Age_bl = min(.data$Age),
-        Timepoint = .data$Age - .data$Age_bl
-        ) %>% 
-      ungroup()
-  }
+  
+  # Check how Sex is encoded
+  data <- data %>% 
+    filter(!is.na(.data$Sex)) %>% 
+    mutate(Sex = if_else(.data$Sex == "M", "Male", 
+                         if_else(.data$Sex == "F", "Female", as.character(.data$Sex))))
+  
+  
+  
+  message("Adding Age_bl and Timepoint variables.")
+  data <- data %>% 
+    group_by(.data$ID) %>% 
+    mutate(
+      Age_bl = min(.data$Age),
+      Timepoint = .data$Age - .data$Age_bl
+      ) %>% 
+    ungroup()
+
   
   if(! "PSQI_Global" %in% names(data)){
     message("Adding PSQI_Global variable.")
