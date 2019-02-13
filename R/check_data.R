@@ -31,6 +31,25 @@ check_data <- function(data){
                paste(pull(check, .data$ID), collapse = ", ")))
   }
   
+  # Check if sleep variables have been propagated across timepoints
+  check <- data %>% 
+    group_by(.data$ID) %>% 
+    summarise_at(vars(contains("PSQI")), funs(sum(is.na(.data$.))/n())) %>% 
+    filter_at(vars(contains("PSQI")), any_vars(.data$. != 1 & .data$. != 0))
+  
+  if(nrow(check) > 0){
+    cat(paste0(nrow(check), " participants have missing sleep scores at a subset of timepoints.\n",
+                 "Preferably, sleep scores should be averaged across all timepoints per participants.\n\n"))
+    
+    ans <- utils::menu(choices = c("Proceed", "Inspect the data and then quit", "Quit"), title = "What do you want?")
+    if(ans == 2){
+      print(check)
+      stop()
+    } else if(ans == 3){
+      stop()
+    }
+  }
+  
   
   # Check how Sex is encoded
   data <- data %>% 
